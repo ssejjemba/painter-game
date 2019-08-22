@@ -20,8 +20,10 @@ Game.start = function () {
     Game.canvasContext = Game.canvas.getContext("2d");
     Game.balloonSprite = new Image();
     Game.backgroundSprite = new Image();
+    Game.cannonBarrelSprite = new Image();
     Game.balloonSprite.src = "spr_balloon.png";
     Game.backgroundSprite.src = "spr_background.jpg";
+    Game.cannonBarrelSprite.src = "spr_cannon_barrel.png";
     Game.backgroundMusic = new Audio();
     Game.backgroundMusic.src = "snd_music.mp3";
     Game.backgroundMusic.volume = 0.4;
@@ -44,13 +46,16 @@ Game.mainLoop = function () {
 };
 
 Game.update = function () {
-
+    var opposite = Game.mousePosition.y - Game.cannonPosition.y;
+    var adjacent = Game.mousePosition.x - Game.cannonPosition.x;
+    Game.cannonRotation = Math.atan2(opposite, adjacent);
 };
 
 Game.draw = function () {
     Game.balloonOrigin = { x : Game.balloonSprite.width / 2,
         y : Game.balloonSprite.height };
     Game.drawImage(Game.backgroundSprite, { x : 0, y : 0 }, 0, { x : 0, y : 0 });
+    Game.drawImage(Game.cannonBarrelSprite, Game.cannonPosition,Game.cannonRotation, Game.cannonOrigin);
     Game.drawImage(Game.balloonSprite, Game.balloonPosition, 0, Game.balloonOrigin);
 };
 
@@ -65,4 +70,5 @@ Game.drawImage = function (sprite, position, rotation, origin) {
 
 function handleMouseMove(evt) {
     Game.balloonPosition = { x : evt.pageX, y : evt.pageY };
+    Game.mousePosition = { x : evt.pageX, y : evt.pageY };
 }
